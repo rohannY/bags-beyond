@@ -1,18 +1,17 @@
-"use client";
-
-import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Link from "next/link";
-import { setCookie } from "cookies-next";
-import { useRouter } from 'next/navigation'
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import {useNavigate} from 'react-router-dom';
 
-export default function signIn() {
+import {useAuthContext } from "../../hooks/useAuthContext"
+
+export default function Login() {
   
   const { register, handleSubmit } = useForm();
-  const [error, setError] = useState(false);
-  const router = useRouter()
-
+  const navigate = useNavigate();
+  const { dispatch } = useAuthContext()
+  
   const onSubmit = (data) => {
     const request = {
       method: "POST",
@@ -23,11 +22,36 @@ export default function signIn() {
       .then((response) => response.json())
       .then((data) => {
         if (data.success==false){
-          setError(true);
-          setTimeout(() => setError(false), 3000)
+          toast.error('Invalid Credentials', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
         }else{
-          setCookie("token", data.token, { maxAge: 60 * 6 * 24 });
-          router.push('/');
+          toast.success('Redirecting...', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "colored",
+            });
+            
+            dispatch({
+              type: "LOGIN",
+              payload: data,
+          })
+
+            setTimeout(()=>{
+              navigate("/");
+            },3000);
         }
       });
   };
@@ -35,6 +59,7 @@ export default function signIn() {
   return (
     <div className="container mx-auto py-2 lg:py-5 font-figtree">
       <div className="my-5 md:my-10 flex flex-col items-center">
+        <ToastContainer/>
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="md:border border-[#818181] px-20 py-16   space-y-5"
@@ -43,23 +68,18 @@ export default function signIn() {
             <p>Email</p>
             <input
               type="email"
-              {...register("email")}
               className="border px-10 py-4 outline-none"
+              {...register("email")}
             />
           </div>
           <div className="space-y-3">
             <p>Password</p>
             <input
               type="password"
-              {...register("password")}
               className="border px-10 py-4 outline-none"
+              {...register("password")}
             />
           </div>
-          {error ? (
-            <p className="text-center py-3 bg-red-400 border-red-800 text-white">
-              Invalid Credentials or Email
-            </p>
-          ) : null}
           <div className="bg-[#1e1e1e] text-white">
             <input
               type="submit"
@@ -69,9 +89,9 @@ export default function signIn() {
 
           <p className="text-[#646464]">
             Dont have an Account,{" "}
-            <Link href="/auth/signUp" className="text-black font-semibold">
+            <a href="/register" className="text-black font-semibold">
               Register
-            </Link>{" "}
+            </a>{" "}
           </p>
         </form>
       </div>

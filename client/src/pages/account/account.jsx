@@ -1,14 +1,10 @@
-"use client";
+import users from "../../assets/images/user.jpg";
+import edit from "../../assets/svg/edit.svg";
 
-import users from "../assets/images/user.jpg";
-import edit from "../assets/svg/edit.svg";
-
-import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import Orders from "./orders";
 
-const user = () => {
+export default function Account(){
   const [name, setName] = useState("Anakin Skywalker");
   const [email, setemail] = useState("chosenone@email.com");
 
@@ -27,7 +23,7 @@ const user = () => {
           <div className="flex items-center align-middle space-x-10">
             <h1 className="mt-5 text-5xl font-bold">Account Information</h1>
             <div className="w-12 h-12 mt-12 cursor-pointer">
-              <Image
+              <img
                 className="object-cover"
                 src={edit}
                 onClick={() => {
@@ -42,7 +38,7 @@ const user = () => {
             <form className="md:grid md:grid-cols-3 border border-indigo-100 py-10">
               <div className="col-span-1 px-10 mb-6 flex justify-center md:block">
                 <div className="border border-red-400 p-2 w-48 h-48">
-                  <Image className="w-44 h-44 object-cover" src={users} />
+                  <img className="w-44 h-44 object-cover" src={users} />
                 </div>
               </div>
 
@@ -98,5 +94,3 @@ const user = () => {
     </>
   );
 };
-
-export default user;

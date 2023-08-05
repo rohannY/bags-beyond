@@ -1,5 +1,4 @@
-import test3 from "../assets/images/test3.jpg";
-import Image from "next/image";
+import test3 from "../../assets/images/test3.jpg";
 const Orders = () => {
   return (
     <>
@@ -12,7 +11,7 @@ const Orders = () => {
               
               <div className="grid grid-cols-8 px-2 py-8 border-b-2 space-x-2 lg:space-x-0">
                 <div className="col-span-3">
-                  <Image className="h-32 w-32 lg:h-48 lg:w-48 object-cover" src={test3} />
+                  <img className="h-32 w-32 lg:h-48 lg:w-48 object-cover" src={test3} />
                 </div>
 
                 <div className="col-span-5 font-figtree space-y-2 md:space-y-4">
