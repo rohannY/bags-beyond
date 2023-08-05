@@ -3,6 +3,7 @@ import acc from "../assets/svg/acc.svg";
 import cart from "../assets/svg/cart.svg";
 import { useState } from "react";
 import { useAuthContext } from "../hooks/useAuthContext";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [isClicked, setIsClicked] = useState(false);
@@ -53,18 +54,13 @@ export default function Navbar() {
                 </li>
               </ul>
             </div>
-            {/* <div className="flex items-center space-x-3 mr-3">
-                <p>Cart</p>
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-[#1e1e1e]">
-                  <span className="text-white text-base">0</span>
-                </div>
-              </div> */}
+
             <div className="flex align-middle items-center space-x-6 mr-10">
               <span>
                 <img
                   src={acc}
                   onClick={handleClick}
-                  className="h-6 hover:bg-blue-100"
+                  className="h-6"
                 />
               </span>
 
@@ -73,13 +69,13 @@ export default function Navbar() {
                   <ul className="text-center">
                     {isAuthenticated ? (
                       <>
-                      <li><a href="/acc"> Account </a></li>
-                      <li onClick={handleLogout}>Logout</li>
+                      <li><Link to="/acc"> Account </Link></li>
+                      <li onClick={handleLogout} className="cursor-pointer" >Logout</li>
                       </>
                     ) : (
                       <>
-                        <li>Sign In</li>
-                        <li>Register</li>
+                        <li><Link onClick={handleClick} to="/login">Sign In</Link></li>
+                        <li><Link onClick={handleClick} to="/register">Register</Link></li>
                       </>
                     )}
                   </ul>

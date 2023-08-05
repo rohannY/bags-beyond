@@ -1,25 +1,44 @@
-import Image from "next/image";
-import Link from "next/link";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
 
-async function getData(category){
+async function getData(category) {
   const res = await fetch(`http://localhost:5000/products/${category}`);
   const products = await res.json();
   return products;
 }
 
-export default async function List({params}) {
-  const products = await getData(params.category);
+export default function List() {
+  const { category } = useParams();
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const products = await getData(category);
+      setProducts(products);
+    }
+    fetchData();
+  }, [category]);
+
   return (
     <>
-      <div className="container mx-auto py-2 lg:py-5 border-b-2">
+      <div className="container mx-auto py-2 border-b-2">
         <div className="md:mx-5">
+          {products.length == 0 && (
+            <>
+              <div className="text-center flex flex-col items-center py-10 font-raleway">
+                "Uh-oh! Cursed Spirits took the data! Time to exorcise them!"
+                👺🔍
+                <div className="bg-black my-10 custom-gojo"></div>
+              </div>
+            </>
+          )}
           <div className="grid grid-cols-2 md:grid-cols-3">
             {products.map((product) => (
               <Link
-                href="/product"
+                to="/product"
                 className="col-span-1 cursor-pointer px-2 py-4 md:px-5 md:py-5"
               >
-                <Image
+                <img
                   className="h-[15em] md:h-[35em] object-cover px-2 md:px-0"
                   src={product.image[0]}
                   width="510"

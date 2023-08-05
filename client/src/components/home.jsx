@@ -24,7 +24,7 @@ const Main = () => {
                   src={test3}
                 />
               </div>
-              <h2 className="text-black text-4xl my-5 md:text-6xl font-clash font-semibold leading-relaxed">
+              <h2 className="text-black text-4xl my-5 md:text-6xl font-raleway font-semibold leading-relaxed">
                 Elevate Your Looks
                 <br />
                 With Our Bags

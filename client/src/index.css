@@ -7,3 +7,15 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.four_zero_four_bg {
+    background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+    height: 400px;
+    background-position: center;
+}
+
+.custom-gojo{
+    background-image: url(https://media.tenor.com/VIcW2BrerocAAAAC/gojo-jjk.gif);
+    height: 280px;
+    width: 450px;
+}

@@ -6,41 +6,41 @@ import {useNavigate} from 'react-router-dom';
 export default function Register() {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
+
+  const showToast = (message, type = "error") => {
+    toast[type](message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
+
   const onSubmit = (data) => {
     const request = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
     };
+
     fetch("http://localhost:5000/user/reg", request)
       .then((response) => response.json())
       .then((data) => {
-        if (data.success == false) {
-          toast.error(data.error, {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
+        if (data.success === false) {
+          showToast(data.error);
         } else {
-          toast.success("Redirecting...", {
-            position: "top-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "colored",
-          });
-          setTimeout(()=>{
+          showToast("Redirecting...", "success");
+          setTimeout(() => {
             navigate("/login");
-          },3000);
+          }, 3000);
         }
+      })
+      .catch(() => {
+        showToast("An error occurred. Please try again later.");
       });
   };
 

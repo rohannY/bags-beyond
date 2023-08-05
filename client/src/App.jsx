@@ -1,11 +1,13 @@
-import Main from "./pages/home";
+import Main from "./components/home";
 import Nav from "./components/Nav";
-import Register from "./pages/auth/register";
-import Account from "./pages/account/account";
-import Login from "./pages/auth/login";
+import Register from "./components/auth/register";
+import Account from "./components/account/account";
+import Login from "./components/auth/login";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { BrowserRouter } from "react-router-dom";
+import Error from "./components/error/404"
+import List from "./components/category/category";
 
 export default function App() {
   const { isAuthenticated } = useAuthContext();
@@ -22,6 +24,8 @@ export default function App() {
             path="/acc"
             element={!isAuthenticated ? <Navigate to="/login" /> : <Account />}
           />
+          <Route path="/list/:category" element={<List/>} />
+          <Route path="*" element={<Error/>} />
         </Routes>
       </BrowserRouter>
     </>
