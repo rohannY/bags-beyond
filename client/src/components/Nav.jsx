@@ -1,22 +1,25 @@
 import logo from "../assets/svg/logo.svg";
 import acc from "../assets/svg/acc.svg";
 import cart from "../assets/svg/cart.svg";
-import { useState } from "react";
+
+import { useCartContext } from "../context/cartContext";
 import { useAuthContext } from "../hooks/useAuthContext";
+
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [isClicked, setIsClicked] = useState(false);
-  const { isAuthenticated,dispatch } = useAuthContext();
+  const { isAuthenticated, dispatch } = useAuthContext();
+  const { cartItems } = useCartContext();
 
   const handleClick = () => setIsClicked((prevIsClicked) => !prevIsClicked);
-  
-  const handleLogout = () =>{
-    setIsClicked(false);
-    dispatch({type: "LOG OUT"})
-    window.location.reload();
-  }
 
+  const handleLogout = () => {
+    setIsClicked(false);
+    dispatch({ type: "LOG OUT" });
+    window.location.reload();
+  };
 
   return (
     <>
@@ -57,11 +60,7 @@ export default function Navbar() {
 
             <div className="flex align-middle items-center space-x-6 mr-10">
               <span>
-                <img
-                  src={acc}
-                  onClick={handleClick}
-                  className="h-6"
-                />
+                <img src={acc} onClick={handleClick} className="h-6" />
               </span>
 
               {isClicked && (
@@ -69,13 +68,25 @@ export default function Navbar() {
                   <ul className="text-center">
                     {isAuthenticated ? (
                       <>
-                      <li><Link to="/acc"> Account </Link></li>
-                      <li onClick={handleLogout} className="cursor-pointer" >Logout</li>
+                        <li>
+                          <Link to="/acc"> Account </Link>
+                        </li>
+                        <li onClick={handleLogout} className="cursor-pointer">
+                          Logout
+                        </li>
                       </>
                     ) : (
                       <>
-                        <li><Link onClick={handleClick} to="/login">Sign In</Link></li>
-                        <li><Link onClick={handleClick} to="/register">Register</Link></li>
+                        <li>
+                          <Link onClick={handleClick} to="/login">
+                            Sign In
+                          </Link>
+                        </li>
+                        <li>
+                          <Link onClick={handleClick} to="/register">
+                            Register
+                          </Link>
+                        </li>
                       </>
                     )}
                   </ul>
@@ -83,7 +94,11 @@ export default function Navbar() {
               )}
 
               <div>
-                <div className="w-2 h-2 bg-red-500 absolute rounded-full"></div>
+                {cartItems.length !== 0 ? (
+                  <div className="w-2 h-2 bg-red-500 absolute rounded-full"></div>
+                ) : (
+                  <></>
+                )}
                 <a href="/cart">
                   <img src={cart} className="h-6" />
                 </a>

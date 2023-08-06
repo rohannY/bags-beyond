@@ -9,8 +9,8 @@ import test7 from "../assets/images/test7.jpg";
 const Main = () => {
   return (
     <>
-      <div className="flex w-full justify-center py-2">
-        <h1 className="font-clash text-center py-4 bg-red-400 w-1/3 text-white">
+      <div className="container mx-auto flex w-full justify-center py-2">
+        <h1 className="font-clash text-center py-4 bg-red-400 w-full lg:w-1/3 text-white">
           If you see this, that means we are still working on this
         </h1>
       </div>

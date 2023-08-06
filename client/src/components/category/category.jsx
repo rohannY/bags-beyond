@@ -19,24 +19,28 @@ export default function List() {
     fetchData();
   }, [category]);
 
+  if (products.length === 0) {
+    return (
+      <div className="text-center flex flex-col items-center py-10 font-raleway">
+        "Uh-oh! Cursed Spirits took the data! Time to exorcise them!" 👺🔍
+        <div className="bg-black my-10 custom-gojo"></div>
+      </div>
+    );
+  }
+
   return (
     <>
       <div className="container mx-auto py-2 border-b-2">
         <div className="md:mx-5">
-          {products.length == 0 && (
-            <>
-              <div className="text-center flex flex-col items-center py-10 font-raleway">
-                "Uh-oh! Cursed Spirits took the data! Time to exorcise them!"
-                👺🔍
-                <div className="bg-black my-10 custom-gojo"></div>
-              </div>
-            </>
-          )}
           <div className="grid grid-cols-2 md:grid-cols-3">
             {products.map((product) => (
               <Link
-                to="/product"
+                to={{
+                  pathname: `/product/${product.name}`,
+                }}
+                state={{productData:product}}
                 className="col-span-1 cursor-pointer px-2 py-4 md:px-5 md:py-5"
+                key={product._id}
               >
                 <img
                   className="h-[15em] md:h-[35em] object-cover px-2 md:px-0"

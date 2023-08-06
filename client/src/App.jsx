@@ -6,28 +6,45 @@ import Login from "./components/auth/login";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { BrowserRouter } from "react-router-dom";
-import Error from "./components/error/404"
+import Error from "./components/error/404";
 import List from "./components/category/category";
+import Product from "./components/product/product";
+import Cart from "./components/cart/cart";
+import { CartProvider } from "./context/cartContext";
 
 export default function App() {
   const { isAuthenticated } = useAuthContext();
 
   return (
-    <>
-      <BrowserRouter>
+    <BrowserRouter>
+      <CartProvider>
         <Nav />
-        <Routes>
-          <Route path="/" element={<Main />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route
-            path="/acc"
-            element={!isAuthenticated ? <Navigate to="/login" /> : <Account />}
-          />
-          <Route path="/list/:category" element={<List/>} />
-          <Route path="*" element={<Error/>} />
-        </Routes>
-      </BrowserRouter>
-    </>
+      </CartProvider>
+      <Routes>
+        <Route path="/" element={<Main />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/acc" element={<Account />} redirectTo="/login" />
+        <Route path="/list/:category" element={<List />} />
+        <Route
+          path="/product/:id"
+          element={
+            <CartProvider>
+              <Product />{" "}
+            </CartProvider>
+          }
+        />
+        <Route
+          path="/cart"
+          element={
+            <CartProvider>
+              <Cart />{" "}
+            </CartProvider>
+          }
+        />
+        {/* 404 Page */}
+        <Route path="*" element={<Error />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
