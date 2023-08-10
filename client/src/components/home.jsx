@@ -11,7 +11,7 @@ const Main = () => {
     <>
       <div className="container mx-auto flex w-full justify-center py-2">
         <h1 className="font-clash text-center py-4 bg-red-400 w-full lg:w-1/3 text-white">
-          If you see this, that means we are still working on this
+          If you see this, that means i am still working on this 😭
         </h1>
       </div>
       <div className="container mx-auto py-5 w-full text-black font-figtree">
