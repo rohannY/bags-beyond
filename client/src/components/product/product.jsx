@@ -1,8 +1,5 @@
 import test2 from "../../assets/images/test2.jpg";
-import test4 from "../../assets/images/test4.jpg";
 import tick from "../../assets/svg/tick.svg";
-import plus from "../../assets/svg/plus.svg";
-import minus from "../../assets/svg/minus.svg";
 
 import { useLocation } from "react-router-dom";
 import { useCartContext } from "../../context/cartContext";
@@ -13,26 +10,48 @@ import "react-toastify/dist/ReactToastify.css";
 export default function Product() {
   const { state } = useLocation();
   const data = state.productData;
-  console.log(data);
-  const { dispatch } = useCartContext();
+  const { dispatch, cartItems } = useCartContext();
+
+  const toastConfig = {
+    position: "top-center",
+    autoClose: 5000,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "colored",
+  };
+
+  const toastMessage = cartItems.find((item) => item.id === data._id)
+    ? "Product already exists : Quantity updated"
+    : "Product Added";
+
+  const addToCart = (itemData) => {
+    dispatch({
+      type: "ADD_TO_CART",
+      payload: itemData,
+    });
+  };
+
+  const updateItemCount = (itemId, newItemCount) => {
+    dispatch({
+      type: "UPDATE_ITEM_COUNT",
+      payload: {
+        itemId,
+        newItemCount,
+      },
+    });
+  };
 
   const handleAddToBag = () => {
-    if (data) {
-      dispatch({
-        type: "ADD_TO_CART",
-        payload: data,
-      });
-      toast.success("Product Added", {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "colored",
-      });
+    const existingCartItem = cartItems.find((item) => item.id === data._id);
+    if (existingCartItem) {
+      updateItemCount(existingCartItem.id, existingCartItem.items + 1);
+    } else if (data) {
+      addToCart(data);
     }
+    toast.success(toastMessage, toastConfig);
   };
 
   return (
@@ -73,7 +92,7 @@ export default function Product() {
           <div className="col-span-5">
             <img
               alt="abc"
-              className="h-[30em] md:h-[50em] object-cover object-top md:object-cover"
+              className="h-[30em] md:h-[50em] w-full object-cover object-top md:object-cover"
               src={data.image[0]}
             />
           </div>
@@ -88,7 +107,7 @@ export default function Product() {
               </p>
               <p className="font-semibold text-xl md:text-3xl">${data.price}</p>
             </div>
-            <div className="space-y-4 py-2 md:py-6 md:border-b-2">
+            {/* <div className="space-y-4 py-2 md:py-6 md:border-b-2">
               <p className="font-figtree text-lg">
                 Size:<span className="font-semibold px-1">S</span>
               </p>
@@ -100,9 +119,9 @@ export default function Product() {
                   <span className="text-black text-base">L</span>
                 </div>
               </div>
-            </div>
+            </div> */}
 
-            <div className="space-y-4 py-2 md:py-6">
+            {/* <div className="space-y-4 py-2 md:py-6">
               <p className="font-figtree text-lg">
                 Color:<span className="font-semibold px-1">Blue</span>
               </p>
@@ -112,35 +131,21 @@ export default function Product() {
                 </div>
                 <div className="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-500"></div>
               </div>
-            </div>
-
-            <div
-              className="md:w-1/2 my-4 cursor-pointer"
-              onClick={handleAddToBag}
-            >
-              <p className="font-raleway font-semibold text-sm text-center py-4 bg-[#d6d6d6]">
-                ADD TO BAG
-              </p>
-            </div>
+            </div> */}
 
             <div className="expandable py-8 space-y-4 border-b-2">
               <div className="flex justify-between items-center">
                 <h3 className="font-semibold">PRODUCT DETAILS</h3>
-                <img alt="abc" className="cursor-pointer h-4 w-4" src={minus} />
               </div>
               <p className="font-light ">{data.description}</p>
             </div>
 
-            <div className="expandable py-8 space-y-4 border-b-2">
-              <div className="flex justify-between items-center">
-                <h3 className="font-semibold">REVIEWS</h3>
-                <img alt="abc" className="cursor-pointer h-4 w-4" src={plus} />
-              </div>
-              <p className="font-light hidden">
-                That is just the way Dave and Andy think. That meeting wasn't
-                something keeping them from programming. It was programming. And
-                it was programming that could be improved. I know they think
-                this way because it is tip number two: Think About Your Work.{" "}
+            <div
+              className="md:w-1/2 my-4 cursor-pointer py-10"
+              onClick={handleAddToBag}
+            >
+              <p className="font-raleway font-semibold text-sm text-center py-4 bg-[#d6d6d6]">
+                ADD TO BAG
               </p>
             </div>
           </div>

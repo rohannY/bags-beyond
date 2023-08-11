@@ -30,6 +30,7 @@ const cartReducer = (state, action) => {
       localStorage.setItem("cart", JSON.stringify(updatedCartafterRemove));
       return updatedCartafterRemove;
     case "CLEAR_CART":
+      localStorage.removeItem("cart");
       return [];
     default:
       return state;

@@ -3,7 +3,7 @@ import Nav from "./components/Nav";
 import Register from "./components/auth/register";
 import Account from "./components/account/account";
 import Login from "./components/auth/login";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes} from "react-router-dom";
 import { useAuthContext } from "./hooks/useAuthContext";
 import { BrowserRouter } from "react-router-dom";
 import Error from "./components/error/404";

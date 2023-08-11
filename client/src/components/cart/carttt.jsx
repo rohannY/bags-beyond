@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import card from "../../assets/svg/card.svg";
 import { useCartContext } from "../../context/cartContext";
+import { useAuthContext } from "../../hooks/useAuthContext";
 import CartItem from "./cartItems";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function CartDetails({ data: cartItems }) {
   const { dispatch } = useCartContext();
+  const { token } = useAuthContext();
 
   const [itemCounts, setItemCounts] = useState(
     cartItems.reduce((acc, item) => ({ ...acc, [item.id]: item.items }), {})
@@ -33,12 +38,12 @@ export default function CartDetails({ data: cartItems }) {
   const removeItem = (itemId) => {
     const updatedCounts = {
       ...itemCounts,
-      [itemId]: Math.max(itemCounts[itemId] - 1, 1),
+      [itemId]: 0,
     };
     setItemCounts(updatedCounts);
     dispatch({
       type: "UPDATE_ITEM_COUNT",
-      payload: { itemId, newItemCount: updatedCounts[itemId] },
+      payload: { itemId, newItemCount: 0 },
     });
     dispatch({
       type: "REMOVE_FROM_CART",
@@ -55,9 +60,71 @@ export default function CartDetails({ data: cartItems }) {
     );
   };
 
+  const submitOrder = async (data, token) => {
+    const url = "http://localhost:5000/order/placeOrder";
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status: ${response.status}`);
+      }
+
+      const responseData = await response.json();
+      return responseData;
+    } catch (error) {
+      console.error("POST Error:", error);
+      return { error: error.message };
+    }
+  };
+
+  const showToast = (message, type) => {
+    toast[type](message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "colored",
+    });
+  };
+
+  const handleCheckout = async () => {
+    if (!token) return;
+    const orderItems = cartItems.map((item) => ({
+      name: item.name,
+      quantity: item.items,
+      image: item.img,
+      price: item.price,
+    }));
+    const data = {
+      orderItems: orderItems,
+      totalPrice: calculateTotalPrice().toFixed(2),
+    };
+    const response = await submitOrder(data, token);
+    if (response.success) {
+      showToast("Order Placed", "success");
+      dispatch({
+        type: "CLEAR_CART",
+      })
+    } else {
+      showToast("Error", "error");
+    }
+  };
+
   return (
     <>
       <div className="">
+        <ToastContainer />
         <div className="lg:grid lg:grid-cols-12">
           <div className="col-span-7">
             {/* START OF CART ITEMs */}
@@ -80,7 +147,7 @@ export default function CartDetails({ data: cartItems }) {
               <div className="flex align-middle items-center">
                 <div className="flex items-center mb-4">
                   <input
-                    checked
+                    defaultChecked
                     id="default-radio-1"
                     type="radio"
                     defaultValue=""
@@ -141,7 +208,9 @@ export default function CartDetails({ data: cartItems }) {
             </div>
 
             <div className="text-center my-5 py-4 border font-figtree font-medium text-lg text-white bg-[#3a3a3a] cursor-pointer">
-              <p>PAY ${calculateTotalPrice().toFixed(2)}</p>
+              <button onClick={handleCheckout}>
+                PAY ${calculateTotalPrice().toFixed(2)}
+              </button>
             </div>
           </div>
         </div>
