@@ -6,6 +6,7 @@ import { useCartContext } from "../../context/cartContext";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Accordion, AccordionItem, Button } from "@nextui-org/react";
 
 export default function Product() {
   const { state } = useLocation();
@@ -133,21 +134,40 @@ export default function Product() {
               </div>
             </div> */}
 
-            <div className="expandable py-8 space-y-4 border-b-2">
+            {/* <div className="expandable py-8 space-y-4 border-b-2">
               <div className="flex justify-between items-center">
                 <h3 className="font-semibold">PRODUCT DETAILS</h3>
               </div>
               <p className="font-light ">{data.description}</p>
-            </div>
+            </div> */}
 
-            <div
+            <Accordion defaultExpandedKeys={["1"]}>
+              <AccordionItem
+                key="1"
+                aria-label="Accordion 1"
+                title="Product Details"
+              >
+                {data.description}
+              </AccordionItem>
+            </Accordion>
+
+            {/* <div
               className="md:w-1/2 my-4 cursor-pointer py-10"
               onClick={handleAddToBag}
             >
               <p className="font-raleway font-semibold text-sm text-center py-4 bg-[#d6d6d6]">
                 ADD TO BAG
               </p>
-            </div>
+            </div> */}
+
+            <Button
+              size="lg"
+              radius="none"
+              className="w-1/2 font-raleway font-semibold text-sm text-center my-4 bg-blue-400 text-white"
+              onClick={handleAddToBag}
+            >
+              ADD TO BAG
+            </Button>
           </div>
         </div>
       </div>

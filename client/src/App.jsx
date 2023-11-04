@@ -11,6 +11,7 @@ import List from "./components/category/category";
 import Product from "./components/product/product";
 import Cart from "./components/cart/cart";
 import { CartProvider } from "./context/cartContext";
+import Test from "./components/test/test";
 
 export default function App() {
   const { isAuthenticated } = useAuthContext();
@@ -22,6 +23,7 @@ export default function App() {
       </CartProvider>
       <Routes>
         <Route path="/" element={<Main />} />
+        <Route path="/test" element={<Test />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/acc" element={<Account />} redirectTo="/login" />

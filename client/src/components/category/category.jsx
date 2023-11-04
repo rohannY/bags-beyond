@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-
+import {Card, CardBody, CardFooter, Image} from "@nextui-org/react";
+import img1 from "../../assets/images/test.jpg";
 async function getData(category) {
   const res = await fetch(`http://localhost:5000/products/${category}`);
   const products = await res.json();
@@ -33,12 +34,13 @@ export default function List() {
       <div className="container mx-auto py-2 border-b-2">
         <div className="md:mx-5">
           <div className="grid grid-cols-2 md:grid-cols-3">
+
             {products.map((product) => (
               <Link
                 to={{
                   pathname: `/product/${product.name}`,
                 }}
-                state={{productData:product}}
+                state={{ productData: product }}
                 className="col-span-1 cursor-pointer px-2 py-4 md:px-5 md:py-5"
                 key={product._id}
               >

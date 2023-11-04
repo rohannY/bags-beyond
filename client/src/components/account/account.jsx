@@ -3,8 +3,9 @@ import edit from "../../assets/svg/edit.svg";
 
 import { useState } from "react";
 import Orders from "./orders";
+import {Breadcrumbs, BreadcrumbItem} from "@nextui-org/react";
 
-export default function Account(){
+export default function Account() {
   const [name, setName] = useState("Anakin Skywalker");
   const [email, setemail] = useState("chosenone@email.com");
 
@@ -12,17 +13,26 @@ export default function Account(){
 
   return (
     <>
-      <div className="container mx-auto py-2 lg:py-5 font-figtree">
-        <div className="font-figtree my-10 px-2 lg:px-0">
-          <h5 className="text-[#7f7f7f]">
-            Home/
-            <span className="font-semibold text-black cursor-pointer">
-              Account
-            </span>
-          </h5>
+      <div className="container mx-auto py-2 lg:py-5 font-figtree px-4">
+        <div className="font-figtree my-10 px-2 lg:px-0 ">
+          
+          <Breadcrumbs className="py-2">
+            <BreadcrumbItem href="/docs/components/button">
+              Button
+            </BreadcrumbItem>
+            <BreadcrumbItem href="/docs/components/breadcrumbs">
+              Breadcrumbs
+            </BreadcrumbItem>
+            <BreadcrumbItem href="/docs/components/card">Card</BreadcrumbItem>
+            <BreadcrumbItem href="/docs/components/checkbox">
+              Checkbox
+            </BreadcrumbItem>
+            <BreadcrumbItem href="/docs/components/code">Code</BreadcrumbItem>
+          </Breadcrumbs>
+          
           <div className="flex items-center align-middle space-x-10">
-            <h1 className="mt-5 text-5xl font-bold">Account Information</h1>
-            <div className="w-12 h-12 mt-12 cursor-pointer">
+            <h1 className="text-5xl font-bold">Account Information</h1>
+            <div className="w-8 h-8 cursor-pointer">
               <img
                 className="object-cover"
                 src={edit}
@@ -76,21 +86,17 @@ export default function Account(){
 
                 {editMode ? (
                   <div className="py-4 mx-10 cursor-pointer bg-[#1e1e1e] text-center">
-                    <input
-                      type="submit"
-                      className="text-white font-semibold"
-                    />
+                    <input type="submit" className="text-white font-semibold" />
                   </div>
                 ) : null}
               </div>
             </form>
           </div>
           <div className="col-span-6 mx-2 md:mx-10">
-            <Orders/>
+            <Orders />
+          </div>
         </div>
-        </div>
-        
       </div>
     </>
   );
-};
+}

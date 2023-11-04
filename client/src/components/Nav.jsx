@@ -6,12 +6,24 @@ import { useCartContext } from "../context/cartContext";
 import { useAuthContext } from "../hooks/useAuthContext";
 
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import {
+  Navbar,
+  NavbarBrand,
+  NavbarContent,
+  NavbarItem,
+  Link,
+  Button,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+} from "@nextui-org/react";
 
-export default function Navbar() {
+export default function Nav() {
   const [isClicked, setIsClicked] = useState(false);
   const { isAuthenticated, dispatch } = useAuthContext();
   const { cartItems } = useCartContext();
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const handleClick = () => setIsClicked((prevIsClicked) => !prevIsClicked);
 
@@ -21,10 +33,23 @@ export default function Navbar() {
     window.location.reload();
   };
 
+  const menuItems = [
+    "Profile",
+    "Dashboard",
+    "Activity",
+    "Analytics",
+    "System",
+    "Deployments",
+    "My Settings",
+    "Team Settings",
+    "Help & Feedback",
+    "Log Out",
+  ];
+
   return (
     <>
-      <div className="container mx-auto py-2 md:py-5 border-b-2">
-        <nav className="text-black hidden lg:block">
+      <div className="container py-2 md:py-5 border-b-2">
+        {/* <nav className="text-black hidden lg:block">
           <div className="flex items-center justify-between  font-figtree">
             <a
               href="/"
@@ -130,6 +155,7 @@ export default function Navbar() {
               </svg>
             </div>
           </div>
+
           <div className="text-center font-figtree py-2 hidden">
             <ul className="space-y-3">
               <li>
@@ -160,7 +186,73 @@ export default function Navbar() {
               </li>
             </ul>
           </div>
-        </nav>
+        </nav> */}
+
+        <Navbar
+          onMenuOpenChange={setIsMenuOpen}
+          className="font-satoshi"
+          maxWidth="2xl"
+        >
+          <NavbarContent>
+            <NavbarMenuToggle
+              aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+              className="sm:hidden"
+            />
+            <NavbarBrand>
+              <Link href="/">
+              <img src={logo} className="h-5" />
+              </Link>
+            </NavbarBrand>
+          </NavbarContent>
+
+          <NavbarContent className="hidden sm:flex gap-4" justify="center">
+            <NavbarItem>
+              <Link color="foreground" href="/list/bagpack">
+                Bagpack
+              </Link>
+            </NavbarItem>
+            <NavbarItem isActive>
+              <Link href="/list/messenger-bags" aria-current="page">
+                Messenger Bags
+              </Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Link color="foreground" href="#">
+                Briefcase
+              </Link>
+            </NavbarItem>
+          </NavbarContent>
+          <NavbarContent justify="end">
+            <NavbarItem className="hidden lg:flex">
+              <Link href="#">Login</Link>
+            </NavbarItem>
+            <NavbarItem>
+              <Button as={Link} color="primary" href="#" variant="flat">
+                Sign Up
+              </Button>
+            </NavbarItem>
+          </NavbarContent>
+          <NavbarMenu>
+            {menuItems.map((item, index) => (
+              <NavbarMenuItem key={`${item}-${index}`}>
+                <Link
+                  color={
+                    index === 2
+                      ? "primary"
+                      : index === menuItems.length - 1
+                      ? "danger"
+                      : "foreground"
+                  }
+                  className="w-full"
+                  href="#"
+                  size="lg"
+                >
+                  {item}
+                </Link>
+              </NavbarMenuItem>
+            ))}
+          </NavbarMenu>
+        </Navbar>
       </div>
     </>
   );
